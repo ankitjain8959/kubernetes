@@ -50,9 +50,10 @@ Kubernetes solves several challenges, such as:
 > Nodes: (Machine)
   - A node is a machine (physical or virtual) where applications run.
 
-> Pods: (that contains containers)
+> Pods: (that contain one or more containers)
   - The smallest unit in K8s, containing one or more containers.
   - If multiple containers are needed for an application (e.g., frontend + backend), they can be inside the same pod.
+  - Pod is a layer on top of the container. A pod usually contains a single container, but it can have multiple if needed.
 
 > Cluster: (Group of Machines Working Together)
   -  A Cluster is a collection of Nodes (machines) that work together to run applications & serve requests.
@@ -85,6 +86,14 @@ A Pod is a wrapper around one or more Containers. It provides: <br>
 	•	A single unit of deployment in Kubernetes.
 In Kubernetes, a Pod groups multiple Containers together so they can share the same network and storage. <br>
 
+
+In Kubernetes,
+- Each pods (and not the containers) gets it's own internal IP address using which they can communicate with each other.
+- `Pods` are ephemeral (i.e. temporary/they can die easily). If a Pod crashes, Kubernetes replaces it with a new one, which gets a new IP address.
+- `Service` component of K8s provides a permanent IP address that can be attached to each pod. Therefore, even if the pod dies, and is replaced by a new one, it's permanent IP address provided by the service remains the same.
+- By default, Kubernetes Services are not accessible from outside the cluster. `Ingress` is a Kubernetes component that routes/forwards external HTTP/HTTPS traffic to the correct Service inside the cluster.
+
+![image](https://github.com/user-attachments/assets/f525c4a8-0685-47e6-a865-df7c6c398891)
 
 Example:
 If you deploy a Spring Boot app to Kubernetes, Kubernetes creates a Pod that contains a Container running the Spring Boot app.
