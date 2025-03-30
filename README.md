@@ -1,5 +1,5 @@
 # Kubernetes (K8s)
-Kubernetes, also known as K8s, is an open source system/platform for automating deployment, scaling, and management of containerized applications.
+**Kubernetes, also known as K8s**, is an open source system/platform for automating deployment, scaling, and management of containerized applications.
 It helps in efficiently managing clusters of containers, ensuring high availability, scalability, and fault tolerance.
 
 The abbreviation K8s comes from a common numeronym pattern where the first and last letter of a word are kept, and the number in between represents the count of omitted letters. <br>
@@ -14,10 +14,12 @@ This pattern is used in other tech abbreviations as well, such as: <br>
 - l10n → Localization (10 letters omitted) <br>
 
 # Who Developed K8s?
-Kubernetes was originally developed by Google and was based on their internal container management system called Borg.
-In 2015, Google open-sourced Kubernetes and donated it to the Cloud Native Computing Foundation (CNCF), which now maintains it.
+**Kubernetes was originally developed by Google** and was based on their internal container management system called Borg.
+In 2015, Google open-sourced Kubernetes **and donated it to the Cloud Native Computing Foundation (CNCF)**, which now maintains it.
 
 # What Problem Does Kubernetes Solve?
+Kubernetes manages containers, making sure they run efficiently, scale when needed, and recover from failures.
+
 > Automated Scaling (Manual Scaling Was Inefficient)
 - Before K8s: Applications had to be scaled manually, either by adding/removing VMs or containers.
 - With K8s: Horizontal Pod Autoscaler (HPA) and Vertical Pod Autoscaler (VPA) allow automatic scaling based on demand.
@@ -41,6 +43,59 @@ Kubernetes solves several challenges, such as:
 - Self-Healing: If a container crashes, Kubernetes automatically restarts it.
 - Load Balancing: Distributes traffic among running containers to prevent overload.
 
+# Key K8s components
+> Containers: (Application runtime)
+  - Containers are lightweight, portable environments that run applications.
+ 
+> Nodes: (Machine)
+  - A node is a machine (physical or virtual) where applications run.
+
+> Pods: (that contains containers)
+  - The smallest unit in K8s, containing one or more containers.
+  - If multiple containers are needed for an application (e.g., frontend + backend), they can be inside the same pod.
+
+> Cluster: (Group of Machines Working Together)
+  -  A Cluster is a collection of Nodes (machines) that work together to run applications & serve requests.
+  -  It consists of a **Master Node (Control Plane) and multiple Worker Nodes**.
+
+**Restaurant Analogy:**
+- Container: A dish being cooked
+- Node: A restaurant kitchen - where food (i.e. applications) is prepared
+- Pod: A table in a restaurant - where different dishes (i.e. containers) are served together.
+- Cluster: Group of restaurant working together - to serve customers (i.e. requests)
+ 
+# K8s Architecture
+Kubernetes manages containers, making sure they run efficiently, scale when needed, and recover from failures.
+
+K8s follows a **Master-Worker** architecture. 
+K8s cluster consists of one Master node and muultiple worker nodes. <br>
+
+> Master Node (or, Control plane): This is the brain of K8s, that makes the decisions. <br>
+
+  It includes, <br>
+- **API Server:** <br>
+  Acts as the main communication hub between users, applications, and Kubernetes. <br>
+  The entry point to K8s cluster or for K8s commands <br>
+  Handles requests (like deploying applications) and communicates with other components. <br>
+
+- **Scheduler:** (Task allocator) <br>
+  Assigns new pods to available workers (nodes) based on resources & policies. <br>
+
+- **Controller Manager:** <br>
+  Ensures correct number of pods & nodes are running. <br>
+
+- **etcd:** (like, a database) <br>
+  A key-value store that stores cluster state & configuration. <br>
+
+- **cloud controller manager** <br>
+  Integrates with underlying cloud provider(s). <br>
+
+> Worker Node: This is where the actual applications (containers) run. <br>
+
+  It includes, <br>
+- **Kubelet:** Ensures containers in a pod & the pods as well are running correctly. <br>
+
+- **Container runtime:** It's a software (Eg, Docker) responsible for running containers. <br>
 
 
 # K9s
