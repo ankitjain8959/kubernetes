@@ -44,62 +44,112 @@ Kubernetes solves several challenges, such as:
 - Load Balancing: Distributes traffic among running containers to prevent overload.
 
 # Key K8s components
-> Containers: (Application runtime)
-  - Containers are lightweight, portable environments that run applications.
- 
-> Nodes: (Machine)
-  - A node is a machine (physical or virtual) where applications run.
+> Nodes: (Server/Machine)
+  - A node is a server/machine (physical or virtual) where applications run.
 
-> Pods: (that contain one or more containers)
+> Pods: (Layer on top of container)
   - The smallest unit in K8s, containing one or more containers.
   - If multiple containers are needed for an application (e.g., frontend + backend), they can be inside the same pod.
-  - Pod is a layer on top of the container. A pod usually contains a single container, but it can have multiple if needed.
+  - Pod is a layer on top of the container (or Abstraction over container). A pod usually contains a single container, but it can have multiple if needed.
 
-> Cluster: (Group of Machines Working Together)
-  -  A Cluster is a collection of Nodes (machines) that work together to run applications & serve requests.
+> Containers: (Application runtime)
+  - Containers are lightweight, portable environments that run applications.
+
+![image](https://github.com/user-attachments/assets/6de4969e-4d9b-432a-837c-d76ed13a437c)
+
+> Cluster: (Group of Servers/Machines Working Together)
+  -  A Cluster is a collection of Nodes (servers) that work together to run applications & serve requests.
   -  It consists of a **Master Node (Control Plane) and multiple Worker Nodes**.
 
 **Restaurant Analogy:**
-- Container: A dish being cooked
 - Node: A restaurant kitchen - where food (i.e. applications) is prepared
 - Pod: A table in a restaurant - where different dishes (i.e. containers) are served together.
+- Container: A dish being cooked
 - Cluster: Group of restaurant working together - to serve customers (i.e. requests)
 
 **Physical Laptop Analogy:**
 - Node: Your physical laptop <br>
 Just like your laptop has CPU, RAM, storage, and an OS, a Node in Kubernetes is a machine (physical or virtual) that provides resources for running applications. <br>
 
-- Cluster: A Network of Multiple Laptops (or a Cloud of Machines Working Together) <br>
-If you imagine multiple laptops connected via a network, where each laptop is a Node, and they all work together as a unit, that forms a Kubernetes Cluster. <br>
+- Pod: A Running Application Process (Like a Java Process on Your Laptop) <br>
+When you run a Spring Boot application using java -jar myapp.jar, it starts a process that consumes memory and CPU — this is similar to a Pod in Kubernetes. <br>
 
 - Container: A Self-Contained Environment for an Application (Like a Virtual Machine or Docker Container on Your Laptop) <br>
 If you run your Spring Boot app inside a Docker container, it has its own runtime environment, dependencies, and isolated filesystem. <br>
 
-- Pod: A Running Application Process (Like a Java Process on Your Laptop) <br>
-When you run a Spring Boot application using java -jar myapp.jar, it starts a process that consumes memory and CPU—this is similar to a Pod in Kubernetes. <br>
+- Cluster: A Network of Multiple Laptops (or a Cloud of Machines Working Together) <br>
+If you imagine multiple laptops connected via a network, where each laptop is a Node, and they all work together as a unit, that forms a Kubernetes Cluster. <br>
 
-A Pod can contain one or more Containers. <br>
-A Pod is the process running your application, and inside the Pod, Containers provide the actual execution environment. <br>
-A Pod is a wrapper around one or more Containers. It provides: <br>
+A Pod can contain one or more containers. <br>
+A Pod is the process running your application, and inside the Pod, containers provide the actual execution environment. <br>
+A Pod is a wrapper around one or more containers. It provides: <br>
 	•	A shared network (all containers in a Pod can talk to each other using localhost).
 	•	A shared storage volume (if needed).
 	•	A single unit of deployment in Kubernetes.
-In Kubernetes, a Pod groups multiple Containers together so they can share the same network and storage. <br>
+In Kubernetes, a Pod groups multiple containers together so they can share the same network and storage. <br>
 
 
-In Kubernetes,
-- Each pods (and not the containers) gets it's own internal IP address using which they can communicate with each other.
-- `Pods` are ephemeral (i.e. temporary/they can die easily). If a Pod crashes, Kubernetes replaces it with a new one, which gets a new IP address.
-- `Service` component of K8s provides a permanent IP address that can be attached to each pod. Therefore, even if the pod dies, and is replaced by a new one, it's permanent IP address provided by the service remains the same.
-- By default, Kubernetes Services are not accessible from outside the cluster. `Ingress` is a Kubernetes component that routes/forwards external HTTP/HTTPS traffic to the correct Service inside the cluster.
-
-![image](https://github.com/user-attachments/assets/f525c4a8-0685-47e6-a865-df7c6c398891)
+**In Kubernetes,**
+> Pod
+- Each Pod (and not individual containers) in K8s gets its own internal IP address.
+- Pods communicate with each other using IPs addresses.
+- Pods are temporary (ephemeral) i.e. they can die easily — if a Pod crashes, Kubernetes replaces it with a new one with a new IP address.
+- `Pod` is another abstraction layer on top of `containers`.
 
 Example:
 If you deploy a Spring Boot app to Kubernetes, Kubernetes creates a Pod that contains a Container running the Spring Boot app.
 If your app also needs a sidecar container (e.g., a logging agent), both containers will be inside the same Pod.
 
 Therefore, a Pod is like a wrapper that holds one or more Containers. A Pod usually contains a single Container, but it can have multiple if needed.
+
+> Service
+- A Service component of K8s provides a stable/permanent IP address and DNS name that can be attached to each pod and to access those pods.
+- Even if the pod dies, and is replaced by a new one, it's permanent IP address provided by the service remains the same.
+
+> Ingress
+- By default, K8s services are not accessible from outside the K8s cluster.
+- Ingress is a component that routes/forwards external HTTP/HTTPS traffic to the appropriate internal service.
+- It acts like a web gateway for the cluster.
+
+![image](https://github.com/user-attachments/assets/2743ac6f-8b61-4feb-b692-cea4f6ef62e9)
+
+> ConfigMap
+- A ConfigMap, a component of K8s, stores non-sensitive configuration data (e.g., environment variables, app settings) for the application in plain text.
+- Useful for keeping app configuration separate from the container image.
+
+> Secret
+- A Secret, a component of K8s, stores sensitive information such as passwords, tokens, and certificates.
+- Data is stored in base64-encoded format, offering basic security.
+  
+![image](https://github.com/user-attachments/assets/f525c4a8-0685-47e6-a865-df7c6c398891)
+
+> Volume
+- A Volume attaches storage (like, a physical hard drive plugged) to a Pod so that data can be stored and accessed by containers.
+- Local Storage: This is storage provided by the node (VM or physical machine) where the Pod is running. Suitable for temporary or short-lived data.
+- Remote/Cloud Storage (outside K8s cluster): Used when persistent and shared storage is needed. (like, MongoDB Cloud)
+
+![image](https://github.com/user-attachments/assets/0306d02c-8f7e-45c1-a4ce-c1a15049d541)
+
+> Deployment
+- Imagine, running a single pod on a single node - If it dies, the app goes down. Therefore, it's recommended to replicate pods to ensure high availability and no downtime.
+![image](https://github.com/user-attachments/assets/8cd984bc-880c-426c-bf61-390a316e35e3)
+
+- Therefore, replicate everything to avoid downtime in production
+![image](https://github.com/user-attachments/assets/fae0c24c-c299-41e0-9f2b-10cfcef1ed53)
+![image](https://github.com/user-attachments/assets/600fdfe7-55bb-470d-aa19-3795cbb88d8c)
+
+- A Deployment is a K8s component that manages replicas (copies) of Pods to ensure high availability and no downtime. Instead of creating Pods directly, you define a blueprint (template) for the Pod and specify how many replicas should run. That blueprint is Deployment. If a Pod crashes, the Deployment automatically creates a new Pod to replace it.
+
+- `Deployment` is another abstraction layer on top of `pods`.
+- `Deployment` is used for stateless applications (apps that don’t store data inside the Pod, like APIs, web servers) & is not used for stateful applications (like, databases that have state/data)!
+- In practice, developers work with `Deployments`, not individual Pods.
+
+> StatefulSet
+- A StatefulSet is used to manage stateful applications, like databases, that store data and need to keep track of their state.
+- Used for apps like MongoDB, MySQL, Cassandra, etc., which can’t use Deployments due to their stateful nature.
+- StatefulSets are complex to configure and manage. That’s why in many real-world setups, databases are hosted outside the Kubernetes cluster (e.g., using MongoDB Atlas, AWS RDS, etc.).
+
+![image](https://github.com/user-attachments/assets/20561741-fa98-415f-8a49-5427ff138063)
 
 # K8s Architecture
 Kubernetes manages containers, making sure they run efficiently, scale when needed, and recover from failures.
