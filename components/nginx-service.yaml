@@ -1,0 +1,11 @@
+apiVersion: v1                # API version of Service resource
+kind: Service                 # Kind of K8s resource
+metadata:                     # Metadata (name) for the resource
+  name: nginx-service
+spec:                         # Specification of the resource
+  selector:                   # Selector to match pods (Which Pods this Service routes to)
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80                # Port exposed by the service
+      targetPort: 8080        # Port exposed by the container

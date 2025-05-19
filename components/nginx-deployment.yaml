@@ -1,0 +1,21 @@
+apiVersion: apps/v1                 # API version of Deployment resource
+kind: Deployment                    # Kind of K8s resource
+metadata:                           # Metadata (name, labels) for the resource
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:                               # Specification of the resource
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx                    # Selector to match pods (How Deployment finds the Pods to manage)
+  template:                         # Blueprint/Template for the pod
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 8080   # Port exposed by the container
