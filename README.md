@@ -183,3 +183,60 @@ K8s cluster consists of one Master node and muultiple worker nodes. <br>
 - **Kubelet:** Ensures containers in a pod & the pods as well are running correctly. <br>
 
 - **Container runtime:** It's a software (Eg, Docker) responsible for running containers. <br>
+
+# Namespace
+- A Namespace in Kubernetes is a virtual cluster within a Kubernetes physical cluster.
+- Think of it like creating separate folders/environments in the same machine to organize and isolate your workloads.
+- It allows you to create multiple isolated environments within the same cluster.
+- Namespace groups resources like Pods, Services, ConfigMaps, Secrets, etc.
+
+## Benefits of Namespaces? <br>
+- `Isolation`	Keeps resources of different teams, apps, or environments separate
+- `Access Control (RBAC)`	Assign permissions on a per-namespace basis (Example: Devs can access only the dev namespace, not prod)
+- `Environment Separation`	Manage dev, staging, and prod etc. in one cluster without interference
+- `CI/CD Pipelines` Use namespaces to deploy and test code in isolation
+- `Resource Management`	Set quotas to avoid overuse of CPU/memory
+
+## Default Namespace <br>
+- If you don't specify a namespace when creating a resource, it goes into the `default` (built-in) namespace.
+- By default, Kubernetes has 4 built-in namespaces:
+    - `default` The default namespace for resources that don't specify one.
+    - `kube-system` Used by Kubernetes core components (DNS, controller, scheduler, etc.).
+    - `kube-public` Readable by all users (rarely used; cluster-info only), including those not authenticated.
+    - `kube-node-lease` Used for node heartbeat data (helps check if nodes are healthy)
+
+## Best practice <br>
+- To use one namespace per environment (e.g., dev, test, prod). In projects, namespaces are used to represent different environments.
+
+## Basic Commands for namespaces <br>
+
+```
+# List all namespaces
+kubectl get namespaces
+```
+
+```
+# Create a new namespace
+kubectl create namespace dev1
+```
+
+```
+# Run a command in a specific namespace
+kubectl get pods -n dev1
+kubectl apply -f my-app.yaml -n dev1
+```
+
+```
+# To verify current namespace
+kubectl config view --minify --output 'jsonpath={..namespace}'
+```
+
+```
+# To switch to a different namespace
+kubectl config set-context --current --namespace=dev1
+```
+
+```
+# To list objects in a specific namespace (Pods, Services, Deployments, ReplicaSets but not other resources like ConfigMaps or Secrets.)
+kubectl get all -n dev1
+```

@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1            # Specifies the API version for the Ingress resource
+kind: Ingress                               # Declares the type of Kubernetes resource as Ingress
+metadata:                                   # Metadata (name, namespace where the resource will be created) section for the resource
+  name: minimal-ingress
+  namespace: kubernetes-dashboard
+spec:                                       # Specification of the Ingress resource
+  rules:                                    # Defines the routing rules for the Ingress
+    - host: dashboard-test.com              # Hostname for which this rule applies
+      http:                                 # HTTP-specific configuration
+        paths:                              # List of paths and their routing configurations
+          - path: /                         # Path to match (root path in this case)
+            pathType: Prefix                # Specifies the type of path matching (Prefix matches the beginning of the path)
+            backend:                        # Backend service configuration (name, port) for routing traffic to
+              service:
+                name: kubernetes-dashboard
+                port:
+                  number: 80
