@@ -96,6 +96,8 @@ In Kubernetes, a Pod groups multiple containers together so they can share the s
 - Pods are temporary (ephemeral) i.e. they can die easily — if a Pod crashes, Kubernetes replaces it with a new one with a new IP address.
 - `Pod` is another abstraction layer on top of `containers`.
 
+Please note, a container crashing does not mean the Pod is dead. A Pod can have multiple containers, and if one container crashes, the Pod itself may still be running with other containers intact.
+
 Example:
 If you deploy a Spring Boot app to Kubernetes, Kubernetes creates a Pod that contains a Container running the Spring Boot app.
 If your app also needs a sidecar container (e.g., a logging agent), both containers will be inside the same Pod.
